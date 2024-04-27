@@ -14,6 +14,7 @@ public class UserController {
     public UserController(UserService userService) {
         this.userService = userService;
     }
+
     @PostMapping("/users")
     public ResponseEntity<UserResponse> insert(@RequestBody UserRequest userRequest, UriComponentsBuilder uriBuilder) {
         User user = userService.insert(userRequest.getName(), userRequest.getEmail());
