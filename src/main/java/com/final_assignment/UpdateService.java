@@ -1,19 +1,16 @@
 package com.final_assignment;
 
-import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UpdateService {
-    private Update update;
+    private final UpdateMapper updateMapper;
 
-    public UpdateService(Update update) {
-        this.update = update;
+    public UpdateService(UpdateMapper entityMapper) {
+        this.updateMapper = entityMapper;
     }
 
-    public Entity updateEntity(String name, String email) {
-        Entity entity = new Entity(null, name, email);
-        UpdateMapper.updateEntity(entity);
-        return entity;
+    public void update(Entity entity) {
+        updateMapper.update(entity);
     }
 }
