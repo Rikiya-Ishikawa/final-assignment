@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS names;
+DROP TABLE IF EXISTS users;
 
 CREATE TABLE users (
  id int unsigned AUTO_INCREMENT,

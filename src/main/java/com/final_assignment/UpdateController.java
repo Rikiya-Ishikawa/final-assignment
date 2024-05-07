@@ -1,6 +1,6 @@
 package com.final_assignment;
 
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,8 +12,10 @@ public class UpdateController {
         this.updateService = updateService;
     }
 
-    @PutMapping("/users/{id}")
-    public void updateYourEntity(@RequestBody Entity entity) {
+    @PatchMapping("/users/{id}")
+    public void update(@RequestBody Entity entity) {
         updateService.update(entity);
     }
 }
+
+
