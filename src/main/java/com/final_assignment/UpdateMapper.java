@@ -6,5 +6,5 @@ import org.apache.ibatis.annotations.Update;
 @Mapper
 public interface UpdateMapper {
     @Update("UPDATE users SET name = #{name}, email = #{email} WHERE id = #{id}")
-    void update(Entity entity);
+    Entity update(Integer id, UpdateRequest request);
 }
