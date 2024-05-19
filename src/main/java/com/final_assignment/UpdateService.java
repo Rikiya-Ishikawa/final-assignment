@@ -1,7 +1,8 @@
 package com.final_assignment;
 
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
+
+import java.util.Optional;
 
 @Service
 public class UpdateService {
@@ -11,12 +12,12 @@ public class UpdateService {
         this.updateMapper = updateMapper;
     }
 
-    public Entity update(Integer id, UpdateRequest request) {
-        Entity entity = updateMapper.update(id, request);
-        if (entity == null) {
-            // ユーザーが見つからない場合の処理
-            return null;
+    public boolean findByUpdateId(Integer id, String name, String email) {
+         Entity entity= updateMapper.findById(id);
+        if(entity == null) {
+            return false;
         }
-        return entity;
+        updateMapper.update(id, name, email);
+        return true;
     }
 }

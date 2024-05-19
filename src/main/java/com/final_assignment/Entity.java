@@ -11,6 +11,12 @@ public class Entity {
         this.email = email;
     }
 
+    public Entity(String name, String email) {
+        this.id = null;
+        this.name = name;
+        this.email = email;
+    }
+
     public Integer getId() {
         return id;
     }

@@ -1,7 +1,5 @@
 package com.final_assignment;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,12 +14,16 @@ public class UpdateController {
     }
 
     @PatchMapping("/users/{id}")
-    public ResponseEntity<Entity> update(@PathVariable Integer id, @RequestBody UpdateRequest request) {
-        Entity update = updateService.update(id, request);
-        if(update == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public GlobalExceptionHandler update(@PathVariable Integer id, @RequestBody UpdateRequest request) {
+        boolean isUpdated = updateService.findByUpdateId(id, request.getName(), request.getEmail());
+
+        if(isUpdated) {
+            UserResponse body = new UserResponse("user updated");
+            return body;
+        } else {
+            GlobalExceptionHandler globalExceptionHandler = new GlobalExceptionHandler();
+            return globalExceptionHandler;
         }
-        return new ResponseEntity<>(update, HttpStatus.OK);
     }
 }
 
