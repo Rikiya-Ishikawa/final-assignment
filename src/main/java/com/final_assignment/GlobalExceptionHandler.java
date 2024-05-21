@@ -10,9 +10,6 @@ import java.util.Map;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
-    // NameNotFoundExceptionをハンドルするメソッド
-
-
     @ExceptionHandler(value = NameNotFoundException.class)
     public ResponseEntity<Map<String, String>> handleNameNotFoundException(
             NameNotFoundException e, HttpServletRequest request) {
