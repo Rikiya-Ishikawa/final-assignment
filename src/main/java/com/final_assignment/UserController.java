@@ -4,10 +4,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
-
 import java.net.URI;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class UserController {
@@ -25,14 +25,9 @@ public class UserController {
     }
 
     @PatchMapping("/users/{id}")
-    public ResponseEntity<?> update(@PathVariable Integer id, @RequestBody UpdateRequest request) {
-        boolean isUpdated = updateService.findByUpdateId(id, request.getName(), request.getEmail());
-
-        if(isUpdated) {
-            return ResponseEntity.ok(Collections.singletonMap("message", "user updated"));
-        } else {
-            return new ResponseEntity<>(NameNotFoundException e, HttpServletRequest request);
-        }
+    public ResponseEntity<UserResponse> update(@PathVariable Integer id, @RequestBody UserRequest request) {
+        Optional<User> user = userService.findById(id, request.getName(), request.getEmail());
+        UserResponse body = new UserResponse("user updated");
+        return ResponseEntity.ok(body);
     }
-
 }

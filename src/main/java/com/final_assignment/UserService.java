@@ -1,7 +1,7 @@
 package com.final_assignment;
 
 import org.springframework.stereotype.Service;
-import java.util.List;
+
 import java.util.Optional;
 
 @Service
@@ -17,12 +17,13 @@ public class UserService {
         return user;
     }
 
-    public User findByUpdateId(Integer id, String name, String email) {
-        Optional<User> user = UserMapper.findById(id);
+    public Optional<User> findById(Integer id, String name, String email) {
+        Optional<User> user = userMapper.findById(id);
         if(user.isPresent()) {
-            return UserMapper.update(id, name, email);
+            userMapper.update(id, name, email);
         } else {
             throw new NameNotFoundException("name not found");
         }
+        return user;
     }
 }

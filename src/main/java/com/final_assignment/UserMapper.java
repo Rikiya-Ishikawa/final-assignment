@@ -7,7 +7,7 @@ import java.util.Optional;
 @Mapper
 public interface UserMapper {
 
-    @Select("SELECT id, name FROM names WHERE id = #{id}")
+    @Select("SELECT id, name FROM users WHERE id = #{id}")
     Optional<User> findById(int id);
 
     @Insert("INSERT INTO users (name, email) VALUES (#{name}, #{email})")
@@ -15,5 +15,5 @@ public interface UserMapper {
     void insert(User user);
 
     @Update("UPDATE users SET name = #{name}, email = #{email} WHERE id = #{id}")
-    int update(Integer id, String name, String email);
+    void update(Integer id, String name, String email);
 }
