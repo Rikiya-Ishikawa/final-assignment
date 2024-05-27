@@ -31,7 +31,7 @@ public class UserController {
         return ResponseEntity.created(location).body(body);
     }
 
-    @PutMapping("/{id}")
+    @PatchMapping("/users/{id}")
     public ResponseEntity<UserResponse> update(@PathVariable Integer id, @RequestBody UserRequest request) {
         userService.update(id, request.getName(), request.getEmail());
         UserResponse response = new UserResponse("user updated");
