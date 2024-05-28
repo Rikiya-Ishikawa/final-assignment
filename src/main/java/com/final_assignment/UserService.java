@@ -46,4 +46,12 @@ public class UserService {
         }
     }
 
+    public void delete(Integer id) {
+        Optional<User> user = userMapper.findName(id);
+        if(user.isPresent()) {
+            userMapper.delete(id);
+        } else {
+            throw new NameNotFoundException("name not found");
+        }
+    }
 }
