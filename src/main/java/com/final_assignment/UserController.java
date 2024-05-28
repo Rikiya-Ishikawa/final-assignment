@@ -31,11 +31,17 @@ public class UserController {
         return ResponseEntity.created(location).body(body);
     }
 
-    @PutMapping("/{id}")
+    @PatchMapping("/users/{id}")
     public ResponseEntity<UserResponse> update(@PathVariable Integer id, @RequestBody UserRequest request) {
         userService.update(id, request.getName(), request.getEmail());
         UserResponse response = new UserResponse("user updated");
         return ResponseEntity.ok(response);
     }
 
+    @DeleteMapping("/users/{id}")
+    public ResponseEntity<UserResponse> delete(@PathVariable Integer id) {
+        userService.delete(id);
+        UserResponse response = new UserResponse("user deleted");
+        return ResponseEntity.ok(response);
+    }
 }

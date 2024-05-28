@@ -37,14 +37,21 @@ public class UserService {
         return user;
     }
 
-    public Optional<User> update(Integer id, String name, String email) {
+    public void update(Integer id, String name, String email) {
         Optional<User> user = userMapper.findName(id);
         if(user.isPresent()) {
             userMapper.update(id, name, email);
         } else {
             throw new NameNotFoundException("name not found");
         }
-        return user;
     }
 
+    public void delete(Integer id) {
+        Optional<User> user = userMapper.findName(id);
+        if(user.isPresent()) {
+            userMapper.delete(id);
+        } else {
+            throw new NameNotFoundException("name not found");
+        }
+    }
 }

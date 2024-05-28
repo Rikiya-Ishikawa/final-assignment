@@ -6,13 +6,13 @@ import java.util.Optional;
 
 @Mapper
 public interface UserMapper {
-    @Select("SELECT * FROM names")
+    @Select("SELECT * FROM users")
     List<User> findAll();
 
-    @Select("SELECT * FROM names WHERE name LIKE CONCAT(#{prefix}, '%')")
+    @Select("SELECT * FROM users WHERE name LIKE CONCAT(#{prefix}, '%')")
     List<User> findByNameStartingWith(String prefix);
 
-    @Select("SELECT id, name FROM names WHERE id = #{id}")
+    @Select("SELECT id, name FROM users WHERE id = #{id}")
     Optional<User> findName(int id);
 
     @Insert("INSERT INTO users (name, email) VALUES (#{name}, #{email})")
@@ -22,4 +22,6 @@ public interface UserMapper {
     @Update("UPDATE users SET name = #{name}, email = #{email} WHERE id = #{id}")
     void update(Integer id, String name, String email);
 
+    @Delete("DELETE FROM users WHERE id = #{id}")
+    void delete(Integer id);
 }
