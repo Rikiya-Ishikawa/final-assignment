@@ -1,20 +1,14 @@
 package com.final_assignment;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
-import javax.lang.model.element.Name;
-import java.time.LocalDate;
 import java.util.Optional;
-import java.util.jar.Attributes;
-import static org.assertj.core.api.ClassBasedNavigableIterableAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.when;
+import static org.assertj.core.api.Assertions.*;
+import static org.mockito.Mockito.doThrow;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
@@ -23,7 +17,7 @@ class UserServiceTest {
     private UserService userService;
 
     @Mock
-    private UserService userMapper;
+    private UserMapper userMapper;
     
     @Test
     void findByNameStartingWith() {
@@ -31,9 +25,18 @@ class UserServiceTest {
 
     @Test
     void 存在するユーザーのIDを指定したときに正常にユーザーが返されること() {
-            doReturn(Optional.of(new User(1, "yamada", "yamada@example.com"))).when(userMapper).findName(1);
-            User actual = userService.findName(1);
-            assertThat(actual).isEqualTo(new User(1, "yamada", "yamada@example.com"));
+        doReturn(Optional.of(new User(1, "yamada", "yamada@example.com"))).when(userMapper).findName(1);
+        User actual = userService.findName(1);
+        assertThat(actual).isEqualTo(new User(1, "yamada", "yamada@example.com"));
+
+    }
+
+    @Test
+    void 存在しないユーザーのIDを指定したときにnameNotFoundが返されること() {
+        doThrow(new NameNotFoundException("name not found")).when(userMapper).findName(999);
+        User actual = userService.findName(999);
+        assertThat(actual).isEqualTo("name not found");
+
     }
 
     @Test
