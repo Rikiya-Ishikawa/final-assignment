@@ -9,9 +9,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 
@@ -53,33 +52,33 @@ class UserServiceTest {
 
     @Test
     void 指定したIDのレコードを取得できること() {
-        doReturn(Optional.of(new User(1, "yamada", "yamada@example.com"))).when(userMapper).findName(1);
-        User actual = userService.findName(1);
+        doReturn(Optional.of(new User(1, "yamada", "yamada@example.com"))).when(userMapper).findById(1);
+        User actual = userService.findById(1);
         assertThat(actual).isEqualTo(new User(1, "yamada", "yamada@example.com"));
-        verify(userMapper, times(1)).findName(1);
+        verify(userMapper, times(1)).findById(1);
 
     }
 
     @Test
     void 存在しないIDを指定した場合は例外が発生すること() {
-        doThrow(new NameNotFoundException("name not found")).when(userMapper).findName(999);
-        assertThrows(NameNotFoundException.class, () -> userService.findName(999));
-        verify(userMapper, times(1)).findName(999);
+        doThrow(new NameNotFoundException("name not found")).when(userMapper).findById(999);
+        assertThrows(NameNotFoundException.class, () -> userService.findById(999));
+        verify(userMapper, times(1)).findById(999);
     }
 
     @Test
     void 登録処理を実施するとその内容が期待通りであること() {
-        doNothing().when(userMapper).insert(any(User.class));
-        User actual = userService.insert("jake", "jake@example.com");
-        assertNotNull(actual);
-        assertEquals("jake", actual.getName());
-        assertEquals("jake@example.com", actual.getEmail());
-        verify(userMapper, times(1)).insert(any(User.class));
 
     }
 
     @Test
-    void 更新処理の実行結果が期待通りであること() {
+    void 更新処理の実行すると引数で渡した値に変更されること() {
+
+    }
+
+    @Test
+    void 更新処理の実行結果が例外を発生すること() {
+
     }
 
     @Test

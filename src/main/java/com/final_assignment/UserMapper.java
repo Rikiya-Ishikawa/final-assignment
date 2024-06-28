@@ -13,14 +13,14 @@ public interface UserMapper {
     List<User> findByNameStartingWith(String prefix);
 
     @Select("SELECT id, name FROM users WHERE id = #{id}")
-    Optional<User> findName(int id);
+    Optional<User> findById(int id);
 
     @Insert("INSERT INTO users (name, email) VALUES (#{name}, #{email})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     void insert(User user);
 
     @Update("UPDATE users SET name = #{name}, email = #{email} WHERE id = #{id}")
-    User update(Integer id, String name, String email);
+    void update(Integer id, String name, String email);
 
     @Delete("DELETE FROM users WHERE id = #{id}")
     void delete(Integer id);
