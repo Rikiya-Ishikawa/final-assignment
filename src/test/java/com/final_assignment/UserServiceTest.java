@@ -10,15 +10,15 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -51,7 +51,7 @@ class UserServiceTest {
     }
 
     @Test
-    void クエリ文字列を指定してレコードを取得できること() {
+    void 指定した名前から始まるレコードを取得できること() {
         doReturn(List.of(new User(4, "misawa", "misawa@example.com"))).when(userMapper).findByNameStartingWith("m");
         List<User> actual = userService.findByNameStartingWith("m");
         assertThat(actual).isEqualTo(List.of(new User(4, "misawa", "misawa@example.com")));
@@ -85,12 +85,10 @@ class UserServiceTest {
 
     @Test
     void 更新処理の実行すると引数で渡した値に変更されること() {
-
     }
 
     @Test
     void 更新処理の実行結果が例外を発生すること() {
-
     }
 
     @Test
