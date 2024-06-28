@@ -10,8 +10,15 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -68,7 +75,12 @@ class UserServiceTest {
 
     @Test
     void 登録処理を実施するとその内容が期待通りであること() {
-
+        doNothing().when(userMapper).insert(any(User.class));
+        User actual = userService.insert("jake", "jake@example.com");
+        assertNotNull(actual);
+        assertEquals("jake", actual.getName());
+        assertEquals("jake@example.com", actual.getEmail());
+        verify(userMapper, times(1)).insert(any(User.class));
     }
 
     @Test
@@ -82,6 +94,10 @@ class UserServiceTest {
     }
 
     @Test
-    void delete() {
+    void 処理を実行すると引数で指定したIdのレコードが削除されること() {
+    }
+
+    @Test
+    void 引数で指定したIdが存在しない時に削除処理を実行すると例外が発生すること() {
     }
 }
