@@ -20,7 +20,7 @@ public interface UserMapper {
     void insert(User user);
 
     @Update("UPDATE users SET name = #{name}, email = #{email} WHERE id = #{id}")
-    void update(Integer id, String name, String email);
+    User update(Integer id, String name, String email);
 
     @Delete("DELETE FROM users WHERE id = #{id}")
     void delete(Integer id);
