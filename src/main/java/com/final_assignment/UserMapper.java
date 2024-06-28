@@ -13,7 +13,7 @@ public interface UserMapper {
     List<User> findByNameStartingWith(String prefix);
 
     @Select("SELECT id, name FROM users WHERE id = #{id}")
-    Optional<User> findName(int id);
+    Optional<User> findById(int id);
 
     @Insert("INSERT INTO users (name, email) VALUES (#{name}, #{email})")
     @Options(useGeneratedKeys = true, keyProperty = "id")

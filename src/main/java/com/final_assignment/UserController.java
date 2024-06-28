@@ -21,7 +21,7 @@ public class UserController {
 
     @GetMapping("/users/{id}")
     public User findName(@PathVariable("id") int id) {
-        return userService.findName(id);
+        return userService.findById(id);
     }
     @PostMapping("/users")
     public ResponseEntity<UserResponse> insert(@RequestBody UserRequest userRequest, UriComponentsBuilder uriBuilder) {

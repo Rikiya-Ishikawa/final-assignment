@@ -22,8 +22,8 @@ public class UserService {
         }
     }
 
-    public User findName(int id) {
-        Optional<User> name = userMapper.findName(id);
+    public User findById(int id) {
+        Optional<User> name = userMapper.findById(id);
         if(name.isPresent()) {
             return name.get();
         } else {
@@ -38,7 +38,7 @@ public class UserService {
     }
 
     public void update(Integer id, String name, String email) {
-        Optional<User> user = userMapper.findName(id);
+        Optional<User> user = userMapper.findById(id);
         if(user.isPresent()) {
             userMapper.update(id, name, email);
         } else {
@@ -47,7 +47,7 @@ public class UserService {
     }
 
     public void delete(Integer id) {
-        Optional<User> user = userMapper.findName(id);
+        Optional<User> user = userMapper.findById(id);
         if(user.isPresent()) {
             userMapper.delete(id);
         } else {
