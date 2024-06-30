@@ -10,10 +10,10 @@ import java.util.Map;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
-    // NameNotFoundExceptionをハンドルするメソッド
-    @ExceptionHandler(value = NameNotFoundException.class)
-    public ResponseEntity<Map<String, String>> handleNameNotFoundException(
-            NameNotFoundException e, HttpServletRequest request) {
+    // UserNotFoundExceptionをハンドルするメソッド
+    @ExceptionHandler(value = UserNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handleUserNotFoundException(
+            UserNotFoundException e, HttpServletRequest request) {
         Map<String, String> body = Map.of(
                 "timestamp", ZonedDateTime.now().toString(),
                 "status", String.valueOf(HttpStatus.NOT_FOUND.value()),

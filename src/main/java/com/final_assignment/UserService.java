@@ -27,7 +27,7 @@ public class UserService {
         if(name.isPresent()) {
             return name.get();
         } else {
-            throw new NameNotFoundException("name not found");
+            throw new UserNotFoundException("user not found");
         }
     }
 
@@ -42,7 +42,7 @@ public class UserService {
         if(user.isPresent()) {
             userMapper.update(id, name, email);
         } else {
-            throw new NameNotFoundException("name not found");
+            throw new UserNotFoundException("user not found");
         }
     }
 
@@ -51,7 +51,7 @@ public class UserService {
         if(user.isPresent()) {
             userMapper.delete(id);
         } else {
-            throw new NameNotFoundException("name not found");
+            throw new UserNotFoundException("user not found");
         }
     }
 }

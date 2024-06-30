@@ -70,8 +70,8 @@ class UserServiceTest {
 
     @Test
     void 存在しないIDを指定した場合は例外が発生すること() {
-        doThrow(new NameNotFoundException("name not found")).when(userMapper).findById(999);
-        assertThrows(NameNotFoundException.class, () -> userService.findById(999));
+        doThrow(new UserNotFoundException("user not found")).when(userMapper).findById(999);
+        assertThrows(UserNotFoundException.class, () -> userService.findById(999));
         verify(userMapper, times(1)).findById(999);
     }
 
@@ -86,7 +86,7 @@ class UserServiceTest {
     }
 
     @Test
-    void 更新処理の実行すると引数で渡した値に変更されること() {
+    void レコードが更新されること() {
         User existingUser = new User(1, "yamada", "yamada@example.com");
         when(userMapper.findById(1)).thenReturn(Optional.of(existingUser));
         doNothing().when(userMapper).update(1, "jake", "jake@example.com");
@@ -96,14 +96,14 @@ class UserServiceTest {
     }
 
     @Test
-    void 更新処理の実行結果が例外を発生すること() {
+    void 存在しないレコードを更新すると例外が発生すること() {
         when(userMapper.findById(1)).thenReturn(Optional.empty());
-        assertThrows(NameNotFoundException.class, () -> userService.update(1, "jake", "jake@example.com"));
+        assertThrows(UserNotFoundException.class, () -> userService.update(1, "jake", "jake@example.com"));
         verify(userMapper, never()).update(1, "jake", "jake@example.com");
     }
 
     @Test
-    void 処理を実行すると引数で指定したIdのレコードが削除されること() {
+    void レコードが削除されること() {
         User existingUser = new User(1, "yamada", "yamada@example.com");
         when(userMapper.findById(1)).thenReturn(Optional.of(existingUser));
         doNothing().when(userMapper).delete(1);
@@ -112,9 +112,9 @@ class UserServiceTest {
     }
 
     @Test
-    void 引数で指定したIdが存在しない時に削除処理を実行すると例外が発生すること() {
+    void 存在しないレコードを削除すると例外が発生すること() {
         when(userMapper.findById(1)).thenReturn(Optional.empty());
-        assertThrows(NameNotFoundException.class, () -> userService.delete(1));
+        assertThrows(UserNotFoundException.class, () -> userService.delete(1));
         verify(userMapper, never()).delete(1);
     }
 }
