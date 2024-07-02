@@ -8,6 +8,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 
 @MybatisTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -31,9 +32,14 @@ class UserMapperTest {
     )
     @Transactional
     void 指定したIDのユーザを取得出来ること() {
+        User expectedUser = new User(1, "jake", "jake@example.com");
         Optional<User> actual = userMapper.findById(1);
-        assertThat(actual.get()).isEqualTo(new User(1, "jake", "jake@example.com"));
-
+        assertTrue(actual.isPresent());
+        actual.ifPresent(user -> {
+            assertEquals(expectedUser.getId(), user.getId());
+            assertEquals(expectedUser.getName(), user.getName());
+            assertEquals(expectedUser.getEmail(), user.getEmail());
+        });
     }
 
     @Test
