@@ -7,7 +7,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
-import static org.assertj.core.api.Assertions.assertThat;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @MybatisTest
@@ -44,6 +44,8 @@ class UserMapperTest {
 
     @Test
     void 存在しないIDのを指定した場合は空のOptionalが返ること() {
+        Optional<User> actual = userMapper.findById(999);
+        assertFalse(actual.isPresent());
     }
 
     @Test
