@@ -20,6 +20,11 @@ class UserMapperTest {
     UserMapper userMapper;
 
     @Test
+    @Sql(
+        scripts = {"classpath:/sqlannotation/delete-users.sql", "classpath:/sqlannotation/insert-users.sql"},
+        executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD
+    )
+    @Transactional
     void findAll() {
     }
 
@@ -28,6 +33,7 @@ class UserMapperTest {
         scripts = {"classpath:/sqlannotation/delete-users.sql", "classpath:/sqlannotation/insert-users.sql"},
         executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD
     )
+    @Transactional
     void  指定した文字で始まるユーザを取得できること() {
         List<User> actual = userMapper.findByNameStartingWith("j");
         assertEquals("jake", actual.get(0).getName());
@@ -52,9 +58,10 @@ class UserMapperTest {
 
     @Test
     @Sql(
-            scripts = {"classpath:/sqlannotation/delete-users.sql", "classpath:/sqlannotation/insert-users.sql"},
-            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD
+        scripts = {"classpath:/sqlannotation/delete-users.sql", "classpath:/sqlannotation/insert-users.sql"},
+        executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD
     )
+    @Transactional
     void 存在しないIDのを指定した場合は空のOptionalが返ること() {
         Optional<User> actual = userMapper.findById(999);
         assertFalse(actual.isPresent());
