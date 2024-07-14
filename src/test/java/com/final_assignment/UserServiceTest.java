@@ -39,10 +39,10 @@ class UserServiceTest {
     void setUp() {
         List<User> mockUsers = Arrays.asList(
                 new User(1, "yamada", "yamada@example.com"),
-                new User(1, "kobashi", "kobashi@example.com"),
-                new User(1, "akiyama", "akiyama@example.com"),
-                new User(1, "misawa", "misawa@example.com"),
-                new User(1, "takayama", "takayama@example.com")
+                new User(2, "kobashi", "kobashi@example.com"),
+                new User(3, "akiyama", "akiyama@example.com"),
+                new User(4, "misawa", "misawa@example.com"),
+                new User(5, "takayama", "takayama@example.com")
                 );
     }
     
