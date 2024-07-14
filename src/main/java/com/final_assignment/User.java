@@ -1,7 +1,5 @@
 package com.final_assignment;
 
-import java.util.Objects;
-
 public class User {
     private Integer id;
     private String name;
