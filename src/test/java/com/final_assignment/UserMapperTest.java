@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -25,7 +27,14 @@ class UserMapperTest {
         executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD
     )
     @Transactional
-    void findAll() {
+    void 全件取得できること() {
+        List<User> actual = userMapper.findAll();
+        List<User> expected = Arrays.asList(
+            new User(1, "jake", "jake@example.com"),
+            new User(2, "keno", "keno@example.com"),
+            new User(3, "wagnerJr", "wagnerJr@example.com")
+        );
+        assertEquals(expected, actual);
     }
 
     @Test
