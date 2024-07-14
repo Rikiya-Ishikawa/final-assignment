@@ -45,7 +45,9 @@ class UserMapperTest {
     @Transactional
     void  指定した文字で始まるユーザを取得できること() {
         List<User> actual = userMapper.findByNameStartingWith("j");
+        assertEquals(1, actual.get(0).getId());
         assertEquals("jake", actual.get(0).getName());
+        assertEquals("jake@example.com", actual.get(0).getEmail());
     }
 
     @Test
