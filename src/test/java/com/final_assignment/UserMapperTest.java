@@ -6,13 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import static org.junit.jupiter.api.Assertions.*;
+
 
 @MybatisTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -79,14 +78,39 @@ class UserMapperTest {
     }
 
     @Test
-    void insert() {
+    @Sql(
+        scripts = {"classpath:/sqlannotation/delete-users.sql", "classpath:/sqlannotation/insert-users.sql"},
+        executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD
+    )
+    @Transactional
+    void 新規登録ができること() {
+        User newUser = new User("soya", "soya@example.com");
+        userMapper.insert(newUser);
+        List<User> users = userMapper.findAll();
+        assertEquals(4, users.size());
+        assertTrue(users.stream().anyMatch(user -> "soya".equals(user.getName()) && "soya@example.com".equals(user.getEmail())));
     }
 
     @Test
-    void update() {
+    @Sql(
+        scripts = {"classpath:/sqlannotation/delete-users.sql", "classpath:/sqlannotation/insert-users.sql"},
+        executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD
+    )
+    @Transactional
+    void 更新処理が出来ること() {
+        Optional<User> user = userMapper.findById(1);
+        assertTrue(user.isPresent());
+        assertDoesNotThrow(() -> userMapper.update(1, "yoichi", "yoichi@example.com"));
+        List<User> users = userMapper.findAll();
+        assertTrue(users.stream().anyMatch(u -> "yoichi".equals(u.getName()) && "yoichi@example.com".equals(u.getEmail())));
     }
 
     @Test
+    @Sql(
+        scripts = {"classpath:/sqlannotation/delete-users.sql", "classpath:/sqlannotation/insert-users.sql"},
+        executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD
+    )
+    @Transactional
     void delete() {
     }
 }
