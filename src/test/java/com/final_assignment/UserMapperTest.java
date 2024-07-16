@@ -9,8 +9,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 @MybatisTest
@@ -55,6 +58,17 @@ class UserMapperTest {
         executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD
     )
     @Transactional
+    void  指定した文字で始まるユーザが存在しない場合は空の値を返すこと() {
+        List<User> actual = userMapper.findByNameStartingWith("s");
+        assertThat(actual).isEmpty();
+    }
+
+    @Test
+    @Sql(
+        scripts = {"classpath:/sqlannotation/delete-users.sql", "classpath:/sqlannotation/insert-users.sql"},
+        executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD
+    )
+    @Transactional
     void 指定したIDのユーザを取得出来ること() {
         User expectedUser = new User(1, "jake", "jake@example.com");
         Optional<User> actual = userMapper.findById(1);
@@ -88,7 +102,7 @@ class UserMapperTest {
         userMapper.insert(newUser);
         List<User> users = userMapper.findAll();
         assertEquals(4, users.size());
-        assertTrue(users.stream().anyMatch(user -> "soya".equals(user.getName()) && "soya@example.com".equals(user.getEmail())));
+        assertTrue(users.stream().anyMatch(user -> user.getName().equals("soya") && user.getEmail().equals("soya@example.com")));
     }
 
     @Test
@@ -111,6 +125,8 @@ class UserMapperTest {
         executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD
     )
     @Transactional
-    void delete() {
+    void 削除処理ができること() {
+        userMapper.delete(1);
+        assertThat(userMapper.findById(1)).isEmpty();
     }
 }
