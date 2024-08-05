@@ -68,7 +68,7 @@ public class UserRestApiIntegrationTest {
     @Test
     @DataSet(value = "datasets/users.yml")
     @Transactional
-    void 指定したドライバーidが1件取得されること() throws Exception {
+    void 指定したidが取得されること() throws Exception {
         String response = mockMvc.perform(MockMvcRequestBuilders.get("/users/1"))
             .andExpect(MockMvcResultMatchers.status().isOk())
             .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
@@ -87,7 +87,7 @@ public class UserRestApiIntegrationTest {
     @Test
     @DataSet(value = "datasets/users.yml")
     @Transactional
-    void 指定したドライバーidが存在しない場合は404を返すこと() throws Exception {
+    void 指定したidが存在しない場合は404を返すこと() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/users/6"))
             .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
