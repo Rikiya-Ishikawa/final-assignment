@@ -14,7 +14,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.nio.charset.StandardCharsets;
 
 @SpringBootTest(classes = FinalAssignmentApplication.class)
@@ -26,7 +25,7 @@ public class UserRestApiIntegrationTest {
     MockMvc mockMvc;
 
     @Test
-    @DataSet(value = "./resources/datasets/users.yml")
+    @DataSet(value = "datasets/users.yml")
     @Transactional
     void ユーザーが全件取得できること() throws Exception {
         String response = mockMvc.perform(MockMvcRequestBuilders.get("/users"))
@@ -39,6 +38,7 @@ public class UserRestApiIntegrationTest {
                             "id": 1,
                             "name": "yamada",
                             "email": "yamada@example.com"
+                        },
                         {
                             "id": 2,
                             "name": "kobashi",
@@ -63,5 +63,32 @@ public class UserRestApiIntegrationTest {
                 """;
 
         JSONAssert.assertEquals(expectedResponse, response, JSONCompareMode.STRICT);
+    }
+
+    @Test
+    @DataSet(value = "datasets/users.yml")
+    @Transactional
+    void 指定したドライバーidが1件取得されること() throws Exception {
+        String response = mockMvc.perform(MockMvcRequestBuilders.get("/users/1"))
+            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
+
+        String expectedResponse = """
+                    {
+                        "id": 1,
+                        "name": "yamada",
+                        "email": "yamada@example.com"
+                    }
+                """;
+
+        JSONAssert.assertEquals(expectedResponse, response, JSONCompareMode.STRICT);
+    }
+
+    @Test
+    @DataSet(value = "datasets/users.yml")
+    @Transactional
+    void 指定したドライバーidが存在しない場合は404を返すこと() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/users/6"))
+            .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 }
