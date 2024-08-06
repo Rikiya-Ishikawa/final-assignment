@@ -1,6 +1,7 @@
 package com.final_assignment;
 
 public class UserResponse {
+
     private String message;
 
     public UserResponse(String message) {
