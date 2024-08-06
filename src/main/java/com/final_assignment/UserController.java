@@ -18,11 +18,11 @@ public class UserController {
         return userService.findByNameStartingWith(startsWith);
     }
 
-
     @GetMapping("/users/{id}")
     public User findName(@PathVariable("id") int id) {
         return userService.findById(id);
     }
+
     @PostMapping("/users")
     public ResponseEntity<UserResponse> insert(@RequestBody UserRequest userRequest, UriComponentsBuilder uriBuilder) {
         User user = userService.insert(userRequest.getName(), userRequest.getEmail());

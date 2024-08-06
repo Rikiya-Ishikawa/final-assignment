@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
 import java.nio.charset.StandardCharsets;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(classes = FinalAssignmentApplication.class)
 @AutoConfigureMockMvc
@@ -29,7 +30,7 @@ public class UserRestApiIntegrationTest {
     @Transactional
     void ユーザーが全件取得できること() throws Exception {
         String response = mockMvc.perform(MockMvcRequestBuilders.get("/users"))
-            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andExpect(status().isOk())
             .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
 
         String expectedResponse = """
@@ -70,7 +71,7 @@ public class UserRestApiIntegrationTest {
     @Transactional
     void 指定したidが取得されること() throws Exception {
         String response = mockMvc.perform(MockMvcRequestBuilders.get("/users/1"))
-            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andExpect(status().isOk())
             .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
 
         String expectedResponse = """
@@ -89,6 +90,33 @@ public class UserRestApiIntegrationTest {
     @Transactional
     void 指定したidが存在しない場合は404を返すこと() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/users/6"))
-            .andExpect(MockMvcResultMatchers.status().isNotFound());
+            .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @DataSet(value = "datasets/users.yml")
+    @Transactional
+    void 新しいレコードが追加されること() throws Exception {
+        String wrestler = """
+                    {
+                        "name": "Luis Mante",
+                        "email": "Luis@example.com"
+                    }
+                """;
+
+        String response = mockMvc.perform(MockMvcRequestBuilders.post("/users")
+                .contentType("application/json")
+                .content(wrestler))
+            .andExpect(MockMvcResultMatchers.status().isCreated())
+            .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
+
+        String expectedResponse = """
+                    {
+                        "name": "Luis Mante",
+                        "email": "Luis@example.com"
+                    }
+                """;
+
+        JSONAssert.assertEquals(expectedResponse, response, JSONCompareMode.LENIENT);
     }
 }
