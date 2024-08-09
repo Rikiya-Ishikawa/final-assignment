@@ -1,0 +1,13 @@
+users:
+  - id: 1
+    name: "yamada"
+    email: yamada@example.com
+  - id: 2
+    name: "kobashi"
+    email: kobashi@example.com
+  - id: 3
+    name: "akiyama"
+    email: akiyama@example.com
+  - id: 4
+    name: "misawa"
+    email: misawa@example.com

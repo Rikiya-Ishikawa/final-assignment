@@ -2,6 +2,7 @@ package integrationtest;
 
 import com.final_assignment.FinalAssignmentApplication;
 import com.github.database.rider.core.api.dataset.DataSet;
+import com.github.database.rider.core.api.dataset.ExpectedDataSet;
 import com.github.database.rider.spring.api.DBRider;
 import org.junit.jupiter.api.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -97,26 +99,71 @@ public class UserRestApiIntegrationTest {
     @DataSet(value = "datasets/users.yml")
     @Transactional
     void 新しいレコードが追加されること() throws Exception {
-        String wrestler = """
+        String newRecord = """
                     {
-                        "name": "Luis Mante",
+                        "name": "Luis",
                         "email": "Luis@example.com"
                     }
                 """;
 
         String response = mockMvc.perform(MockMvcRequestBuilders.post("/users")
                 .contentType("application/json")
-                .content(wrestler))
+                .content(newRecord))
             .andExpect(MockMvcResultMatchers.status().isCreated())
             .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
 
         String expectedResponse = """
                     {
-                        "name": "Luis Mante",
-                        "email": "Luis@example.com"
+                        "message": "user created"
                     }
                 """;
 
-        JSONAssert.assertEquals(expectedResponse, response, JSONCompareMode.LENIENT);
+        JSONAssert.assertEquals(expectedResponse, response, JSONCompareMode.STRICT);
+    }
+
+    @Test
+    @DataSet(value = "datasets/users.yml")
+    @ExpectedDataSet(value = "datasets/update_users.yml")
+    @Transactional
+    void 指定したidのレコードが更新されること() throws Exception {
+        String updatedRecord = """
+                {
+                    "id": 1,
+                    "name": "内藤哲也",
+                    "email": "naitou@example.com"
+                }
+            """;
+
+        String response = mockMvc.perform(MockMvcRequestBuilders.patch("/users/1")
+                .contentType("application/json")
+                .content(updatedRecord))
+            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
+
+        String expectedResponse = """
+                {
+                    "message": "user updated"
+                }
+            """;
+
+        JSONAssert.assertEquals(expectedResponse, response, JSONCompareMode.STRICT);
+    }
+
+    @Test
+    @DataSet(value = "datasets/users.yml")
+    @ExpectedDataSet(value = "datasets/delete_users.yml")
+    @Transactional
+    void 指定したidのレコードが削除されること() throws Exception {
+        String response = mockMvc.perform(MockMvcRequestBuilders.delete("/users/5"))
+            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
+
+        String expectedResponse = """
+                {
+                    "message": "user deleted"
+                }
+            """;
+
+        JSONAssert.assertEquals(expectedResponse, response, JSONCompareMode.STRICT);
     }
 }
