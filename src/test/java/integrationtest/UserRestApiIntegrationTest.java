@@ -123,6 +123,7 @@ public class UserRestApiIntegrationTest {
 
     @Test
     @DataSet(value = "datasets/users.yml")
+    @ExpectedDataSet(value = "datasets/update_users.yml")
     @Transactional
     void 指定したidのレコードが更新されること() throws Exception {
         String updatedRecord = """
